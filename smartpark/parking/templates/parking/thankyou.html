@@ -1,0 +1,35 @@
+{% extends 'parking/base.html' %}
+{% block title %}— Thank You{% endblock %}
+{% block extra_head %}
+<style>
+  .ty-wrap { text-align: center; padding: 4rem 1rem; max-width: 500px; margin: 0 auto; }
+  .ty-icon { font-size: 5rem; margin-bottom: 1.5rem; animation: pop 0.5s ease; }
+  @keyframes pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  .ty-title { font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .ty-sub { color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem; }
+  .redirect-note { font-size: 0.85rem; color: var(--muted); margin-top: 1.5rem; }
+  .countdown { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: var(--primary); margin: 1rem 0; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="ty-wrap">
+    <div class="ty-icon">🚗💨</div>
+    <div class="ty-title">THANK YOU FOR VISITING!</div>
+    <div class="ty-sub">Safe travels. See you next time!</div>
+    <div class="alert alert-success" style="display:inline-block;">✅ Your parking slot has been released successfully.</div>
+    <div class="redirect-note">Redirecting to home in</div>
+    <div class="countdown" id="cd">3</div>
+    <a href="/" class="btn btn-primary">🏠 Go to Home Now</a>
+  </div>
+</div>
+<script>
+let n = 5;
+const cd = document.getElementById('cd');
+const iv = setInterval(() => {
+  n--;
+  cd.textContent = n;
+  if (n <= 0) { clearInterval(iv); window.location.href = '/'; }
+}, 1000);
+</script>
+{% endblock %}

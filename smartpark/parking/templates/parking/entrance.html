@@ -1,0 +1,63 @@
+{% extends 'parking/base.html' %}
+{% block title %}— Choose Entrance{% endblock %}
+{% block extra_head %}
+<style>
+  .entrance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 1rem; }
+  .entrance-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    display: block;
+  }
+  .entrance-card:hover { border-color: var(--primary); background: var(--bg3); transform: translateY(-3px); }
+  .entrance-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .entrance-card h2 { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; }
+  .entrance-card .avail {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .avail.green { background: #14532d33; color: #4ade80; border: 1px solid #16a34a55; }
+  .avail.red { background: #7f1d1d33; color: #f87171; border: 1px solid #dc262655; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="steps"><div class="step done"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <div class="page-title">Choose Your Entrance</div>
+  <div class="page-sub">Select the entrance closest to where you are.</div>
+  <div class="entrance-grid">
+    <a href="/entrance/South/levels/" class="entrance-card">
+      <div class="icon">⬆️</div>
+      <h2>SOUTH ENTRANCE</h2>
+      <span class="avail {% if stats.South > 0 %}green{% else %}red{% endif %}">
+        {% if stats.South > 0 %}{{ stats.South }} slots available{% else %}Full{% endif %}
+      </span>
+    </a>
+    <a href="/entrance/East/levels/" class="entrance-card">
+      <div class="icon">➡️</div>
+      <h2>EAST ENTRANCE</h2>
+      <span class="avail {% if stats.East > 0 %}green{% else %}red{% endif %}">
+        {% if stats.East > 0 %}{{ stats.East }} slots available{% else %}Full{% endif %}
+      </span>
+    </a>
+    <a href="/entrance/North/levels/" class="entrance-card">
+      <div class="icon">⬇️</div>
+      <h2>NORTH ENTRANCE</h2>
+      <span class="avail {% if stats.North > 0 %}green{% else %}red{% endif %}">
+        {% if stats.North > 0 %}{{ stats.North }} slots available{% else %}Full{% endif %}
+      </span>
+    </a>
+  </div>
+  <div style="margin-top:2rem;"><a href="/" class="btn btn-outline">← Back</a></div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'parking/base.html' %}
+{% block title %}— Welcome{% endblock %}
+{% block extra_head %}
+<style>
+  .hero { text-align: center; padding: 4rem 1rem 2rem; }
+  .hero-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .hero h1 { font-family: 'Rajdhani', sans-serif; font-size: 3rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 0.5rem; }
+  .hero h1 span { color: var(--primary); }
+  .hero p { color: var(--muted); font-size: 1.1rem; margin-bottom: 2.5rem; }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 3rem; }
+  .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: center; }
+  .stat-card .num { font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; font-weight: 700; color: var(--primary); }
+  .stat-card .label { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+  .stat-card.available .num { color: var(--available); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--available); margin-right: 6px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="hero">
+    <div class="hero-icon">🏢</div>
+    
+    <h1><span>HELLO,</span> WELCOME</h1>
+    <p>Real-time slot management. No queues. No confusion.</p>
+    <div class="hero-btns">
+      <a href="/entrance/" class="btn btn-primary btn-lg">🚗 ENTRANCE</a>
+      <a href="/exit/" class="btn btn-outline btn-lg">🚪 EXIT</a>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card available">
+      <div class="num"><span class="dot"></span>{{ total_available }}</div>
+      <div class="label">Slots Available Now</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">{{ total_slots }}</div>
+      <div class="label">Total Parking Slots</div>
+    </div>
+    {% for entrance, count in stats.items %}
+    <div class="stat-card">
+      <div class="num" style="color:{% if count > 0 %}var(--available){% else %}var(--danger){% endif %}">{{ count }}</div>
+      <div class="label">{{ entrance }} Entrance</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'parking/base.html' %}
+{% block title %}— Your Receipt{% endblock %}
+{% block extra_head %}
+<style>
+  .receipt-wrap { max-width: 480px; margin: 2rem auto; }
+  .receipt-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .receipt-header {
+    background: var(--primary);
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .receipt-header h2 { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; letter-spacing: 2px; color: #fff; }
+  .receipt-body { padding: 1.5rem; }
+  .receipt-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+  .receipt-row:last-child { border-bottom: none; }
+  .receipt-row .lbl { color: var(--muted); }
+  .receipt-row .val { font-weight: 600; }
+  .code-box {
+    text-align: center;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    background: #1e3a5f33;
+    border: 2px dashed #0077ff55;
+    border-radius: 10px;
+  }
+  .code-box .code-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  .code-box .code-val { font-family: 'Rajdhani', sans-serif; font-size: 2.4rem; font-weight: 700; letter-spacing: 8px; color: var(--primary); }
+  .slot-big { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; color: var(--primary); font-weight: 700; }
+  .gate-section { margin: 1.5rem 0; }
+  .gate-bar-wrap { background: var(--bg3); border-radius: 8px; height: 16px; overflow: hidden; margin: 8px 0; }
+  .gate-bar { width: 100%; height: 100%; background: var(--danger); border-radius: 8px; transition: width 1s ease; }
+  .gate-label { font-size: 0.85rem; text-align: right; color: var(--muted); }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="steps"><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step active"></div></div>
+  <div class="receipt-wrap">
+    <div class="receipt-card">
+      <div class="receipt-header">
+        <div style="font-size:2rem;margin-bottom:6px;">🎫</div>
+        <h2>PARKING RECEIPT</h2>
+      </div>
+      <div class="receipt-body">
+        <div class="receipt-row"><span class="lbl">Entrance</span><span class="val">{{ slot.entrance }}</span></div>
+        <div class="receipt-row"><span class="lbl">Level</span><span class="val">Level {{ slot.level }}</span></div>
+        <div class="receipt-row"><span class="lbl">Slot Number</span><span class="val slot-big">{{ slot.slot_id }}</span></div>
+        <div class="receipt-row"><span class="lbl">Time</span><span class="val">{{ slot.occupied_at|date:"d M Y, H:i" }}</span></div>
+        <div class="code-box">
+          <div class="code-label">🔐 Verification Code</div>
+          <div class="code-val">{{ code }}</div>
+          <div style="font-size:0.8rem;color:var(--muted);margin-top:6px;">Keep this code — you'll need it to exit</div>
+        </div>
+
+        <div class="gate-section">
+          <div style="font-size:0.9rem;color:var(--muted);margin-bottom:4px;">Boom Gate & Spikes</div>
+          <div class="gate-bar-wrap"><div class="gate-bar" id="gateBar"></div></div>
+          <div class="gate-label" id="gateLabel">🔴 Closed</div>
+        </div>
+
+        <div class="alert alert-info">🏁 Click the button below. The boom gate and spikes for slot <strong>{{ slot.slot_id }}</strong> will open simultaneously.</div>
+
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem;font-size:1.1rem;" onclick="openGate()">
+          🚦 OPEN GATE & ENTER
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function openGate() {
+  const bar = document.getElementById('gateBar');
+  const lbl = document.getElementById('gateLabel');
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Opening...';
+  bar.style.background = '#16a34a';
+  bar.style.width = '0%';
+  lbl.textContent = '🟢 Open — Drive to your slot!';
+  lbl.style.color = '#4ade80';
+  setTimeout(() => { window.location.href = '/parked/'; }, 1400);
+}
+</script>
+{% endblock %}

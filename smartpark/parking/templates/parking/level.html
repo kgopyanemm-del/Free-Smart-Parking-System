@@ -1,0 +1,44 @@
+{% extends 'parking/base.html' %}
+{% block title %}— Choose Level{% endblock %}
+{% block extra_head %}
+<style>
+  .level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 1rem; }
+  .level-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    display: block;
+  }
+  .level-card:hover { border-color: var(--primary); transform: translateY(-2px); background: var(--bg3); }
+  .level-card .num { font-family: 'Rajdhani', sans-serif; font-size: 3rem; font-weight: 700; color: var(--primary); }
+  .level-card .lbl { font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; letter-spacing: 1px; margin-bottom: 8px; }
+  .level-card .avail { font-size: 0.85rem; }
+  .level-card .avail.ok { color: #4ade80; }
+  .level-card .avail.no { color: #f87171; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="steps"><div class="step done"></div><div class="step done"></div><div class="step"></div><div class="step"></div></div>
+  <div class="breadcrumb"><a href="/entrance/">Entrances</a> › {{ entrance }} Entrance</div>
+  <div class="page-title">Choose Parking Level</div>
+  <div class="page-sub">{{ entrance }} Entrance — Select a level to see available slots.</div>
+  <div class="level-grid">
+    {% for level, count in level_stats.items %}
+    <a href="/entrance/{{ entrance }}/level/{{ level }}/slots/" class="level-card">
+      <div class="num">L{{ level }}</div>
+      <div class="lbl">LEVEL {{ level }}</div>
+      <div class="avail {% if count > 0 %}ok{% else %}no{% endif %}">
+        {% if count > 0 %}{{ count }} available{% else %}Full{% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  <div style="margin-top:2rem;"><a href="/entrance/" class="btn btn-outline">← Back</a></div>
+</div>
+{% endblock %}
